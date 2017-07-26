@@ -8,6 +8,5 @@ import org.springframework.web.bind.annotation.RestController;
  * DATE   : 7/25/2017
  * TIME   : 1:29 PM
  */
-@RestController
 public class RoleController {
 }

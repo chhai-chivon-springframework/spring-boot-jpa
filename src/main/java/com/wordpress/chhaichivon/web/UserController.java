@@ -26,10 +26,10 @@ public class UserController {
     private Map<String,Object> map;
 
     @RequestMapping(value = "/users",method = RequestMethod.GET,headers = "Accept=Application/json")
-    public ResponseEntity<Map<String,Object>> gets() {
+    public ResponseEntity<Map<String,Object>> getAllUser() {
         map = new HashMap<>();
         List<User> users = (List<User>) userRepository.findAll();
-            if(users != null || !users.isEmpty()){
+            if(!users.isEmpty()){
                 map.put("DATA", users);
                 map.put("STATUS", true);
                 map.put("MESSAGE", "DATA FOUND");
@@ -37,23 +37,26 @@ public class UserController {
                 map.put("STATUS", false);
                 map.put("MESSAGE", "DATA NOT FOUND");
             }
-        return new ResponseEntity(map, HttpStatus.OK);
+        return new ResponseEntity<>(map,HttpStatus.OK);
     }
     @RequestMapping(value = "/users", method = RequestMethod.POST,headers = "Accept=Application/json")
-    public ResponseEntity<Map<String,Object>> save(@RequestBody User userSave) {
-       User user =  userRepository.save(userSave);
+    public ResponseEntity<Map<String,Object>> saveOrUpdateUser(@RequestBody User userSave) {
+        User user = new User();
+            user.setUserName(userSave.getUserName());
+            user.setPassword(userSave.getPassword());
         if(user != null){
-            map.put("DATA", user);
+            userRepository.save(user);
+            map.put("DATA", "DARA");
             map.put("STATUS", true);
             map.put("MESSAGE", "SUCCESSFUL");
         }else{
             map.put("STATUS", false);
             map.put("MESSAGE", "FAIL");
         }
-        return new ResponseEntity(map, HttpStatus.OK);
+        return new ResponseEntity<>(map,HttpStatus.OK);
     }
-    @RequestMapping(value = "/users/{id}", method = RequestMethod.POST,headers = "Accept=Application/json")
-    public ResponseEntity<Map<String,Object>> delete(@PathVariable("id") Long id) {
+    @RequestMapping(value = "/users/{id}", method = RequestMethod.DELETE,headers = "Accept=Application/json")
+    public ResponseEntity<Map<String,Object>> deleteUser(@PathVariable("id") Long id) {
         User user =  userRepository.findOne(id);
         if(user != null){
             userRepository.delete(user);
@@ -64,6 +67,6 @@ public class UserController {
             map.put("STATUS", false);
             map.put("MESSAGE", "DATA NOT FOUND");
         }
-        return new ResponseEntity(map, HttpStatus.OK);
+        return new ResponseEntity<>(map,HttpStatus.OK);
     }
 }

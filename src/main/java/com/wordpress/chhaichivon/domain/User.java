@@ -1,5 +1,6 @@
 package com.wordpress.chhaichivon.domain;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.wordpress.chhaichivon.helpers.BaseEntity;
 import lombok.Data;
 
@@ -22,7 +23,9 @@ public class User extends BaseEntity {
     @Column(name = "user_id")
     private Long id;
     @Column(name = "user_name")
+    @JsonProperty("USERNAME")
     private String userName;
+    @JsonProperty("PASSWORD")
     @Column(name = "password")
     private String password;
   /*  @ManyToMany(cascade = CascadeType.ALL)
